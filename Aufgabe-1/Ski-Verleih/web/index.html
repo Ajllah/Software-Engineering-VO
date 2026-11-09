@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123b43">
+  <title>Ski-Verleih | Übersicht</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Ski-Verleih Startseite">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span>Ski-Verleih <small>VERWALTUNG</small></span>
+    </a>
+    <div class="topbar-note"><span class="status-dot"></span> Lokaler Prototyp</div>
+  </header>
+
+  <main class="page">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">ÜBERSICHT</p>
+        <h1>Guten Tag</h1>
+        <p class="muted">Bestand und Verleih auf einen Blick.</p>
+      </div>
+      <div id="today" class="today"></div>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="stats" aria-label="Bestandsübersicht">
+      <article class="stat-card stat-available">
+        <span class="stat-label">Verfügbare Ski</span>
+        <strong id="available-count">0</strong>
+        <span class="stat-foot">bereit zur Ausleihe</span>
+      </article>
+      <article class="stat-card stat-rented">
+        <span class="stat-label">Ausgeliehen</span>
+        <strong id="rented-count">0</strong>
+        <span class="stat-foot">aktuell bei Kunden</span>
+      </article>
+      <article class="stat-card stat-total">
+        <span class="stat-label">Ski gesamt</span>
+        <strong id="total-count">0</strong>
+        <span class="stat-foot">im Bestand</span>
+      </article>
+      <article class="stat-card stat-customers">
+        <span class="stat-label">Kunden</span>
+        <strong id="customer-count">0</strong>
+        <span class="stat-foot">registriert</span>
+      </article>
+    </section>
+
+    <form id="daily-rate-form" class="panel rate-panel">
+      <div>
+        <p class="eyebrow">PREISGESTALTUNG</p>
+        <h2>Tagestarif pro Ski</h2>
+        <p class="muted rate-description">Änderungen gelten nach dem Speichern für neue Buchungen; bestehende Preise bleiben unverändert.</p>
+      </div>
+      <div class="rate-controls">
+        <label class="sr-only" for="daily-rate">Tagestarif in Euro</label>
+        <input id="daily-rate" type="number" min="0" step="0.01" value="20.00" required>
+        <span>€ / Tag</span>
+        <button class="button button-primary" type="submit">Tarif speichern</button>
+      </div>
+    </form>
+
+    <section class="content-grid">
+      <article class="panel inventory-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">BESTAND</p>
+            <h2>Ski verwalten</h2>
+          </div>
+          <span id="ski-total" class="count-pill">0 Ski</span>
+        </div>
+        <form id="ski-form" class="inline-form">
+          <label class="sr-only" for="ski-type">Ski-Typ</label>
+          <input id="ski-type" name="type" maxlength="80" placeholder="z. B. All-Mountain 160" required>
+          <button class="button button-primary" type="submit"><span aria-hidden="true">+</span> Ski hinzufügen</button>
+          <button id="ski-cancel" class="button button-quiet" type="button" hidden>Abbrechen</button>
+        </form>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Ski-Typ</th><th>Status</th><th class="actions-heading">Aktion</th></tr></thead>
+            <tbody id="ski-rows"></tbody>
+          </table>
+          <p id="ski-empty" class="empty-state">Noch keine Ski im Bestand. Füge den ersten Ski hinzu.</p>
+        </div>
+      </article>
+
+      <article class="panel customer-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">KUNDEN</p>
+            <h2>Kunde registrieren</h2>
+          </div>
+          <span id="customer-total" class="count-pill">0 Kunden</span>
+        </div>
+        <form id="customer-form" class="form-stack">
+          <label for="customer-name">Vor- und Nachname</label>
+          <input id="customer-name" name="name" autocomplete="name" maxlength="120" placeholder="z. B. Alex Beispiel" required>
+          <div class="form-row">
+            <div>
+              <label for="document-type">Ausweistyp</label>
+              <select id="document-type" name="documentType" required>
+                <option value="">Bitte auswählen</option>
+                <option>Personalausweis</option>
+                <option>Reisepass</option>
+                <option>Führerschein</option>
+                <option>Sonstiger Ausweis</option>
+              </select>
+            </div>
+            <div>
+              <label for="document-number">Ausweisnummer</label>
+              <input id="document-number" name="documentNumber" maxlength="80" placeholder="Nummer" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="customer-submit" class="button button-primary" type="submit">Kunde registrieren</button>
+            <button id="customer-cancel" class="button button-quiet" type="button" hidden>Abbrechen</button>
+          </div>
+          <p class="hint">Ausweisangaben werden lokal in der Datendatei dieser Anwendung gespeichert.</p>
+        </form>
+      </article>
+    </section>
+
+    <section class="content-grid lower-grid">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">AUSLEIHE</p>
+            <h2>Ski ausleihen</h2>
+          </div>
+        </div>
+        <form id="rental-form" class="form-stack">
+          <label for="rental-ski">Verfügbarer Ski</label>
+          <select id="rental-ski" name="skiId" required></select>
+          <label for="rental-customer">Kunde</label>
+          <select id="rental-customer" name="customerId" required></select>
+          <label for="rental-start-date">Verleihbeginn</label>
+          <input id="rental-start-date" name="startDate" type="date" required>
+          <label for="rental-days">Dauer in ganzen Tagen</label>
+          <input id="rental-days" name="days" type="number" min="1" step="1" value="1" required>
+          <div class="price-preview">
+            <span id="rental-price-label">Voraussichtlicher Gesamtpreis</span>
+            <strong id="rental-price">€ 20,00</strong>
+          </div>
+          <button id="rental-submit" class="button button-primary" type="submit">Ausleihe erfassen</button>
+          <p class="hint">Zukünftige Verleihbeginne werden reserviert. Preis = ganze Verleihtage × Tagestarif.</p>
+        </form>
+      </article>
+
+      <article class="panel customer-list-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">KUNDENKARTEI</p>
+            <h2>Registrierte Kunden</h2>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Ausweis</th><th class="actions-heading">Aktion</th></tr></thead>
+            <tbody id="customer-rows"></tbody>
+          </table>
+          <p id="customer-empty" class="empty-state">Noch keine Kunden registriert.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel rentals-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">VERLEIHHISTORIE</p>
+          <h2>Ausleihen und Rückgaben</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ski</th><th>Kunde</th><th>Verleihbeginn</th><th>Fällig</th><th>Preis</th><th>Status</th><th class="actions-heading">Aktion</th></tr></thead>
+          <tbody id="rental-rows"></tbody>
+        </table>
+        <p id="rental-empty" class="empty-state">Noch keine Ausleihen erfasst.</p>
+      </div>
+    </section>
+    <footer>Die Daten werden lokal in data.json gespeichert. Behandle diese Datei vertraulich und lösche sie nicht, wenn du deine Daten behalten möchtest.</footer>
+  </main>
+</body>
+</html>
