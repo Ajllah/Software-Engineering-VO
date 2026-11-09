@@ -23,15 +23,12 @@ Ein einfacher Webapp-Prototyp zur Verwaltung eines Skiverleihs. Das Dashboard un
 
 Ein eigenständiges Fahrradverleih-Projekt soll geplant werden. Fahrräder sollen stundenweise ausgeliehen werden; jede angefangene Stunde zählt als volle Stunde. Der Projektplan soll Funktionen, Abläufe, Preisberechnung und Akzeptanzkriterien festhalten. Die Umsetzung des Fahrradprojekts ist nicht Teil dieses Ski-Verleih-Prototyps.
 
-### Teil d – Plugin-Architektur
-
-Eine Plugin-Architektur ist vorerst nicht erforderlich und nicht Teil des Umfangs.
 
 ## Aktueller Implementierungsstand
 
 Teil a und b sind als lokaler Prototyp umgesetzt. Ski und Kunden erhalten automatisch fortlaufende IDs. Die Kundenerfassung unterstützt derzeit die manuelle Eingabe des Ausweistyps und der Ausweisnummer; ein Dokument-Upload ist nicht enthalten. Ski können tageweise verliehen, zurückgegeben und für zukünftige Zeiträume reserviert werden. Überlappende Zeiträume desselben Skis werden abgewiesen. Der Tagestarif beträgt standardmäßig 20,00 Euro, kann über das Dashboard geändert oder beim ersten Start per `DAILY_RATE_EUR` konfiguriert werden. Der Gesamtpreis wird für jede Buchung gespeichert. Ski, Kunden, Ausleihen, Reservierungen und Tarif werden lokal in `data.json` gespeichert und beim Start geladen.
 
-Teil c (separate Fahrradverleih-Planung) ist nicht implementiert.
+Teil c wurde als eigenständiges Fahrradverleih-Projekt umgesetzt und befindet sich im separaten Ordner Aufgabe-1/Fahrrad-Verleih. Das Ski-Verleih-Projekt umfasst die Teile a) und b).
 
 ## Akzeptanzkriterien
 
